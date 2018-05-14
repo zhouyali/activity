@@ -7,20 +7,25 @@
 			<div class="product clearfix" v-for="(item,index) in list" :key="index">
 				<img class="img fl" src="" alt="">
 				<div class="info">
-					<div class="name">{{item.name}}</div>
-					<div class='detail-box'>
-					    <div class="detail-item" v-for="(detail,index) in item.spec" @click="goToDetail">
-					    	<span class="spec-name">面值</span>	
+<!-- 					<div class="name">名字：{{item.ProductName}}</div>
+					<div class="filler">材质：{{item.Filler}}</div>
+					<div class="material">种类：{{item.Material}}</div> -->
+<!-- 					<div class='detail-box'>
+					    <div class="detail-item" v-for="(detail,index) in item.spec" @click="goToDetail"> -->
+<!-- 					    	<span class="spec-name">面值</span>	
 							<span class="spec-value">{{detail.money}}</span>
 							<br/>
 							<span class="spec-name">配置</span>	
 							<span class="spec-value">{{detail.config}}</span>
 							<br/>
 							<span class="spec-name">范围</span>	
-							<span class="spec-value">{{detail.range}}</span>
-					    </div>
-					</div>
-					<div class="price">端午价：{{item.price}}元</div>
+							<span class="spec-value">{{detail.range}}</span> -->
+<!-- 					    </div>
+					</div> -->
+					<!-- <div class="price">端午价：{{item.price}}元</div> -->
+<div style=""><b>面值 150</b></div><div style=""><b>配置 张50元优惠卷</b></div><div style=""><b>范围 全国范围</b></div><div style=""><b><font color="#808000">端午节</font>：<font color="#ffcc00">150元</font></b></div>
+
+					
 				</div>
 			</div>
 		</div>
@@ -35,69 +40,73 @@
 	export default {
 		data() {
 			return {
-				list:[
-					{
-						id:1,
-                     	name:'哈根达斯券',
-                     	img:'',
-                     	price:'150',
-                     	spec:[
-                          {'money':'150',
-                          'config':'张50元优惠券',
-                          'range':'全国范围'}
-                     	]
-					},
-					{
-						id:1,
-                     	name:'哈根达斯券',
-                     	img:'',
-                     	price:'150',
-                     	spec:[
-                          {'money':'150',
-                          'config':'张50元优惠券',
-                          'range':'全国范围'}
-                     	]
-					},	
-					{
-						id:1,
-                     	name:'哈根达斯券',
-                     	img:'',
-                     	price:'150',
-                     	spec:[
-                          {'money':'150',
-                          'config':'张50元优惠券',
-                          'range':'全国范围'}
-                     	]
-					},
-					{
-						id:1,
-                     	name:'哈根达斯券',
-                     	img:'',
-                     	price:'150',
-                     	spec:[
-                          {'money':'150',
-                          'config':'张50元优惠券',
-                          'range':'全国范围'}
-                     	]
-					},
-					{
-						id:1,
-                     	name:'哈根达斯券',
-                     	img:'',
-                     	price:'150',
-                     	spec:[
-                          {'money':'150',
-                          'config':'张50元优惠券',
-                          'range':'全国范围'}
-                     	]
-					}																											
-				],
+				// list:[
+				// 	{
+				// 		id:1,
+    //                  	name:'哈根达斯券',
+    //                  	img:'',
+    //                  	price:'150',
+    //                  	spec:[
+    //                       {'money':'150',
+    //                       'config':'张50元优惠券',
+    //                       'range':'全国范围'}
+    //                  	]
+				// 	},
+				// 	{
+				// 		id:1,
+    //                  	name:'哈根达斯券',
+    //                  	img:'',
+    //                  	price:'150',
+    //                  	spec:[
+    //                       {'money':'150',
+    //                       'config':'张50元优惠券',
+    //                       'range':'全国范围'}
+    //                  	]
+				// 	},	
+				// 	{
+				// 		id:1,
+    //                  	name:'哈根达斯券',
+    //                  	img:'',
+    //                  	price:'150',
+    //                  	spec:[
+    //                       {'money':'150',
+    //                       'config':'张50元优惠券',
+    //                       'range':'全国范围'}
+    //                  	]
+				// 	},
+				// 	{
+				// 		id:1,
+    //                  	name:'哈根达斯券',
+    //                  	img:'',
+    //                  	price:'150',
+    //                  	spec:[
+    //                       {'money':'150',
+    //                       'config':'张50元优惠券',
+    //                       'range':'全国范围'}
+    //                  	]
+				// 	},
+				// 	{
+				// 		id:1,
+    //                  	name:'哈根达斯券',
+    //                  	img:'',
+    //                  	price:'150',
+    //                  	spec:[
+    //                       {'money':'150',
+    //                       'config':'张50元优惠券',
+    //                       'range':'全国范围'}
+    //                  	]
+				// 	}																											
+				// ],
+				list:[],
 				activeBtn:0
 			}
 			
 		},
         created() {
             this.$http.post('/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
+            	if(res.status == 200) {
+            		this.list = res.data.result;
+            	}
                 console.log(res)
             })
         },
