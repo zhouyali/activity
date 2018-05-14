@@ -58,7 +58,6 @@ exports.cssLoaders = function (options) {
     }
   }
 
-  // lijing
   function generateSassResourceLoader() {
     var loaders = [
       cssLoader, 

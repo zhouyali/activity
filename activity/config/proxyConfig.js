@@ -1,28 +1,24 @@
+// module.exports = {
+//   proxy: {
+//     '/api': {
+//       target: 'http://101.201.154.210:9004',
+//       changeOrigin: true,
+//       pathRewrite: {
+//         '^/api': ''
+//       },
+//       secure: false
+//     }
+//   }
+// }
 module.exports = {
-  proxy: {
-    '/proxyapi': {
-      target: 'https://app.prd.com',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/proxyapi': ''
-      },
-      secure: false
-    },
-    '/sitapi': {
-      target: 'http://10.145.200.25:8080',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/sitapi': ''
-      },
-      secure: false
-    },
-    '/sitcmsapi': {
-      target: 'http://cms.dbjb.com',
-      changeOrigin: true,
-      pathRewrite: {
-          '^/sitcmsapi': ''
-      },
-      secure: false
-    },
-  }
-}
+      proxy: {
+        '/getProduct': {
+          target: 'http://101.201.154.210:9004',
+          changeOrigin: true,
+          // pathRewrite: {
+          //   '^/getProduct': ''
+          // },
+          secure: false
+        }
+      }
+    }

@@ -10,7 +10,7 @@
 		</div>
 		<form>
 			<fieldset class="input-group">
-			    <div class="header"></div>
+			    <div class="header">请填写您的收货信息</div>
 		        <div class="input-box">
 		          <label>地址：</label>
 		          <input type="text" v-model='address' placeholder="请输入有效地址" required>
@@ -24,7 +24,7 @@
 		          <label>收件人姓名：</label>
 		          <input type="text" v-model='name' placeholder="请输入姓名" required>
 		        </div>
-		        <span class="btn">确认提交</span>			        	        
+		        <div class="btn">确认提交</div>			        	        
         	</fieldset>
 		</form>	
 	</div>
@@ -79,14 +79,16 @@
 			text-align: center;
 			width: 80%;
 			margin: 0 auto;
-			height: px2rem(45px);
-			line-height: px2rem(45px);
+			height: px2rem(55px);
+			line-height: px2rem(55px);
+			font-size: px2rem(30px);
 		}
 		.input-box {
 			position: relative;
+			overflow: hidden;
 			margin: px2rem(10px) auto;
 			background: green;
-			text-align: left;
+			text-align: right;
 			width: 80%;
 			height: px2rem(65px);
 			line-height: px2rem(60px);	
@@ -96,8 +98,19 @@
 			input {
 				background: #fff;
 				height:px2rem(55px);
-                width: 80%;
+				width: 65%;
+				margin-right: px2rem(20px);
+				border-radius: px2rem(8px);
 			}	
+		}
+		.btn {
+			padding: px2rem(10px) px2rem(30px);
+			background-color: green;
+			color: #fff;
+			width: 50%;
+			margin: px2rem(20px) auto;
+			text-align: center;
+			border-radius: px2rem(10px);
 		}
 	}
 </style>

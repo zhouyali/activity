@@ -9,7 +9,7 @@
 				<div class="info">
 					<div class="name">{{item.name}}</div>
 					<div class='detail-box'>
-					    <div class="detail-item" v-for="(detail,index) in item.spec">
+					    <div class="detail-item" v-for="(detail,index) in item.spec" @click="goToDetail">
 					    	<span class="spec-name">面值</span>	
 							<span class="spec-value">{{detail.money}}</span>
 							<br/>
@@ -96,6 +96,11 @@
 			}
 			
 		},
+        created() {
+            this.$http.post('/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
+                console.log(res)
+            })
+        },
 		methods: {
 			skipTo(n) {
 				if(n == 0) {
@@ -103,7 +108,10 @@
 				}else {
 					this.$router.push('subOrder')
 				}
-			}
+			},
+            goToDetail() {
+                this.$router.push('itemdetail')
+            }
 		}
 	}
 </script>
@@ -164,5 +172,7 @@
 		width: 100%;
 		height: px2rem(100px);
         z-index:1;
+        background: url('../assets/image/weavebt.jpg') no-repeat center bottom;
+        background-size: 100%;
 	}
 </style>
