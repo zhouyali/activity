@@ -7,22 +7,6 @@
 			<div class="product clearfix" v-for="(item,index) in list" :key="index">
 				<img class="img fl" src="" alt="">
 				<div class="info">
-<!-- 					<div class="name">名字：{{item.ProductName}}</div>
-					<div class="filler">材质：{{item.Filler}}</div>
-					<div class="material">种类：{{item.Material}}</div> -->
-<!-- 					<div class='detail-box'>
-					    <div class="detail-item" v-for="(detail,index) in item.spec" @click="goToDetail"> -->
-<!-- 					    	<span class="spec-name">面值</span>	
-							<span class="spec-value">{{detail.money}}</span>
-							<br/>
-							<span class="spec-name">配置</span>	
-							<span class="spec-value">{{detail.config}}</span>
-							<br/>
-							<span class="spec-name">范围</span>	
-							<span class="spec-value">{{detail.range}}</span> -->
-<!-- 					    </div>
-					</div> -->
-					<!-- <div class="price">端午价：{{item.price}}元</div> -->
 <div style=""><b>面值 150</b></div><div style=""><b>配置 张50元优惠卷</b></div><div style=""><b>范围 全国范围</b></div><div style=""><b><font color="#808000">端午节</font>：<font color="#ffcc00">150元</font></b></div>
 
 					
@@ -40,63 +24,6 @@
 	export default {
 		data() {
 			return {
-				// list:[
-				// 	{
-				// 		id:1,
-    //                  	name:'哈根达斯券',
-    //                  	img:'',
-    //                  	price:'150',
-    //                  	spec:[
-    //                       {'money':'150',
-    //                       'config':'张50元优惠券',
-    //                       'range':'全国范围'}
-    //                  	]
-				// 	},
-				// 	{
-				// 		id:1,
-    //                  	name:'哈根达斯券',
-    //                  	img:'',
-    //                  	price:'150',
-    //                  	spec:[
-    //                       {'money':'150',
-    //                       'config':'张50元优惠券',
-    //                       'range':'全国范围'}
-    //                  	]
-				// 	},	
-				// 	{
-				// 		id:1,
-    //                  	name:'哈根达斯券',
-    //                  	img:'',
-    //                  	price:'150',
-    //                  	spec:[
-    //                       {'money':'150',
-    //                       'config':'张50元优惠券',
-    //                       'range':'全国范围'}
-    //                  	]
-				// 	},
-				// 	{
-				// 		id:1,
-    //                  	name:'哈根达斯券',
-    //                  	img:'',
-    //                  	price:'150',
-    //                  	spec:[
-    //                       {'money':'150',
-    //                       'config':'张50元优惠券',
-    //                       'range':'全国范围'}
-    //                  	]
-				// 	},
-				// 	{
-				// 		id:1,
-    //                  	name:'哈根达斯券',
-    //                  	img:'',
-    //                  	price:'150',
-    //                  	spec:[
-    //                       {'money':'150',
-    //                       'config':'张50元优惠券',
-    //                       'range':'全国范围'}
-    //                  	]
-				// 	}																											
-				// ],
 				list:[],
 				activeBtn:0
 			}
@@ -131,16 +58,17 @@
     }
 	.logo {
 		width: 100%;
-		height: px2rem(500px);
-		background: pink;
+		height: px2rem(804px);
+		background: url('../assets/image/top.gif') no-repeat top center;
+        background-size: 100% auto;
 	}
 	.product {
-		margin:0 px2rem(30px);
-		padding:px2rem(10px) px2rem(20px);
-		border: 1px solid red;
-		font-size: px2rem(24px);
+        width:px2rem(690px);
+        height:px2rem(220px);
+		margin:0 auto;
+        background:url('../assets/image/card.gif') no-repeat center center;
+        background-size: 100%;
 		.info {
-			margin-left: px2rem(300px);
 		}
 	}
 	.img {
@@ -179,9 +107,9 @@
 		left:0;
 		background:pink;
 		width: 100%;
-		height: px2rem(100px);
+		height: px2rem(113px);
         z-index:1;
-        background: url('../assets/image/weavebt.jpg') no-repeat center bottom;
+        background: url('../assets/image/list-bottom.gif') no-repeat center bottom;
         background-size: 100%;
 	}
 </style>
