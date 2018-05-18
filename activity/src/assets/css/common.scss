@@ -146,5 +146,11 @@ textarea::-webkit-input-placeholder {
 img {
   border: 0
 }
-
+.container {
+  height:100%;
+  min-height:100%;
+  background:rgba(246,246,245,1);
+  overflow:hidden;
+  overflow-y:scroll;
+}
 
