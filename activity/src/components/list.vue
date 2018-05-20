@@ -7,6 +7,7 @@
 				<img class="img fl" :src="item.productImg[0].productimgID" alt="">
 				<div class="info" v-html="item.htmldetial">			
 				</div>
+				<span :class="{'checked':checkeds.indexOf(index) > -1}" @click="checkedProduct(item,index)"></span>
 			</div>
             <i class="line-l"></i>
             <i class="line-r"></i>
@@ -25,26 +26,67 @@
 			return {
 				list:[],
 				activeBtn:0,
+				checkeds: [],
+				products:[]
 			}
 			
 		},
         created() {
-            this.$http.post('/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
-            	if(res.status == 200) {
-            		this.list = res.data.result;
-            	}
-            })
+    //     	let params={
+    //     		"key": "12345678",
+				// "ORCode": "E5EC0168-9BA3-4F9B-B47E-F118F85F5B27"
+    //     	}
+    //     	this.$http.post('/Verification/ORCodeVerification',params).then((res)=>{
+    //     		if(res.data.result.code == '0002') {
+    //     			this.$router.push('myOrder')
+    //     		}else if(res.data.result.code == '0002') {
+        			this.getList()
+    //     		}else {
+    //     			$toast.showMsg(res.data.result.message)
+    //     		}
+ 			// 	console.log(res.data.result)
+    //     	})
+        	
         },
 		methods: {
+		    getList() {
+	            this.$http.post('/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
+	            	console.log(res)
+	            	if(res.status == 200) {
+	            		this.list = res.data.result;
+	            	}else {
+	            		$toast.showMsg(res.data.result.message)
+	            	}
+	            })
+		    },
 			skipTo(n) {
 				if(n == 0) {
 					this.$router.push('myOrder')
 				}else {
-					this.$router.push('subOrder')
+					if (this.checkeds.length < 1) {
+	            		$toast.showMsg('请选择商品')
+	            		return false;
+	            	}
+					this.$router.push({'path':'itemdetail'});
+					localStorage.setItem('products',JSON.stringify(this.products))
 				}
 			},
             goToDetail() {
                 this.$router.push('itemdetail')
+            },
+            checkedProduct(item,index) {
+            	let temp = this.checkeds.indexOf(index);
+            	if (temp > -1) {
+            		this.checkeds.splice(temp, 1);
+            		return false;
+            	}
+            	if (this.checkeds.length >= 2) {
+            		$toast.showMsg('只能选择两个商品');
+            		return false;
+            	}
+            	this.checkeds.push(index);
+            	this.products.push(item);         	
+            	
             }
 		}
 	}
@@ -63,9 +105,24 @@
 		margin:0 auto;
         background:url('../assets/image/card.gif') no-repeat top center;
         background-size: 100%;
+        position:relative;
 		.info {
             padding-top: px2rem(40px);
             padding-left: px2rem(450px);
+		}
+		span {
+			display:block;
+			position: absolute;
+			width:px2rem(36px);
+			height:px2rem(36px);
+			border-radius:50%;
+			border:2px solid #78c25e;
+			left: px2rem(20px);
+			top:50%;
+			margin-top:px2rem(-18px);
+		}
+		.checked {
+			background: #78C25E !important;
 		}
 	}
 	.img {
@@ -82,6 +139,7 @@
     .list {
         position: relative;
         padding-bottom: px2rem(113px);
+        -webkit-overflow-scrolling: touch;
     }
     footer {
         position: absolute;

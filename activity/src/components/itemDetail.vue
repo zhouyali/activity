@@ -1,26 +1,28 @@
 <template>
     <div class="container">
         <div class="bg-img">
-            <div class="info">
-                <div class="product-name">
-                    毛绒挂饰（秋田）
+            <div class="info clearfix" :class="{'pd-top':index==0,'pd-bottom':index==1}" v-for="(item,index) in info">
+                <div class="detail-top" v-show="index==1"></div>    
+                <div class="product-name pl">
+                    {{item.ProductName}}
                 </div>
-                <img class="img" src=""> 
-                <span class="tag">产品信息：</span>
-                <div>
-                    <span class="label">材质：</span><span></span><br/>
-                    <span class="label">填充物：</span><span></span><br/>
-                    <span class="label">重量：</span><span></span><br/>
+                <img class="img" :src="item.productImg[0].productimgID"> 
+                <span class="tag pl">产品信息：</span>
+                <div v-html="item.htmldetial" class="detail pl">
                 </div>
+                <div class="detail-line fr" v-show="index == 1"></div>
+                <img class="fir-img" :src="item.productImg[1].productimgID">
+                <img class="sec-img" :src="item.productImg[2].productimgID">
             </div>
         </div>
-        <div class="content">
-            <img src="">
-            <img class="sec-img" src="">
-            <footer>
-                <div class="btn" @click="submit"></div>
-            </footer>
-        </div>
+        <footer>
+            <div class="btn" @click="submit"></div>
+        </footer>
+        <!-- <div class="content"> -->
+<!--         <footer>
+            <div class="btn" @click="submit"></div>
+        </footer> -->
+        <!-- </div> -->
         
     </div>
 </template>
@@ -28,16 +30,15 @@
     export default {
         data() {
             return {
-                address:'',
-                phone:'',
-                name:''
+                info:[]
             }
         },
         created() {
-
+            this.info = JSON.parse(localStorage.getItem('products'))
         },
         methods: {
             submit() {
+                this.$router.push('subOrder');
 
             }
         }
@@ -50,11 +51,30 @@
         background: url('../assets/image/book-detail.gif') no-repeat center top;
         background-size: 100%;
         padding-top:px2rem(150px);
-        padding-left: px2rem(70px);
+        position: relative;
     }
 
     .info {
-        padding: px2rem(100px);
+        .pl {
+            padding-left: px2rem(160px); 
+        }
+        &.pd-top {
+            padding-top: px2rem(100px);
+        }
+       
+        .detail-top {
+            height:px2rem(158px);
+            width:100%;
+            background:url('../assets/image/detail-top.png') no-repeat top center;
+            background-size: 100%;
+        }
+        &.pd-bottom {
+            .sec-img {
+                position:relative;
+                z-index:2;
+            }
+            padding-bottom:px2rem(100px);
+        }
     }
     .product-name {
         color: green;
@@ -70,23 +90,20 @@
         height: px2rem(192px);
         margin: px2rem(20px) auto;
     }
-    .content {
-        padding-top:px2rem(540px);
-        position: relative;
-        img {
-            position: absolute;
-            /*margin: px2rem(30px) auto;*/
-            top:0;
-            left:50%;
-            margin-left: px2rem(-164px);
-            z-index:2;
-        }
-        .sec-img {
-            top:px2rem(180px);
-        }
+    .fir-img {
+        margin-top:px2rem(160px);
+    }
+    .nopd-top {
+        margin-top:0;
+    }
+    .detail-line {
+        width:px2rem(578px);
+        height:px2rem(56px);
+        background:url('../assets/image/detail-line.gif') no-repeat right top;
+        background-size:100%;
     }
     footer {
-        position:fixed;
+        position:absolute;
         width: 100%;
         height:px2rem(316px);
         background:url('../assets/image/myorder-bottom.gif') no-repeat center bottom;
@@ -104,5 +121,8 @@
         left: 50%;
         margin-left: px2rem(-112px);
     }
-
+    .detail {
+        position: relative;
+        z-index:3
+    }
 </style>

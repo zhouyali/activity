@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 const List = () => import('@/components/list');
+const checkOrder = () => import('@/components/checkOrder');
 const SubOrder = () => import('@/components/subOrder');
 const MyOrder = () => import('@/components/myOrder');
 const ItemDetail = () => import('@/components/itemDetail');
@@ -13,6 +14,11 @@ const $router = new Router({
     routes: [
         {
             path: '/',
+            name: 'checkOrder',
+            component: checkOrder
+        },
+        {
+            path: '/list',
             name: 'list',
             component: List
         },

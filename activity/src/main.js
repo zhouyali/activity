@@ -7,6 +7,7 @@ import router from './router'
 
 // 引入配置项
 import './config/rem'
+import './assets/js/createToast'
 import axios from './config/service'
 console.log('环境变量--'+process.env.NODE_ENV)
 
@@ -20,19 +21,3 @@ new Vue({
   template: '<App/>'
 });
 
-//兼容安卓登录注册页面底部logo
-let clientHeight = document.body.clientHeight
-window.onresize = () => {
-    // alert(clientHeight)
-    let innerClientHeight = document.body.clientHeight
-        // alert(innerClientHeight)
-    if (innerClientHeight < (clientHeight - 50)) {
-        if (document.querySelector(".logo")) {
-            document.querySelector(".logo").style.display = 'none';
-        }
-    } else {
-        if (document.querySelector(".logo")) {
-            document.querySelector(".logo").style.display = 'block';
-        }
-    }
-}

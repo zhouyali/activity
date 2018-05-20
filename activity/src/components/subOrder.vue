@@ -4,11 +4,11 @@
         </div>
         <div class="img-box clearfix">
             <div class="product-images fl">
-                <img src="" alt="">
+                <img :src="info[0].productImg[4].productimgID" alt="">
                 
             </div>
             <div class="product-images fr">
-                <img src="" alt="">
+                <img :src="info[1].productImg[4].productimgID" alt="">
                 
             </div> 
         </div>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="input-box">
                       <label>手机号：</label>
-                      <input type="text" v-model='phone' placeholder="" required>
+                      <input type="tel" maxlength="11" v-model='phone' placeholder="" required>
                     </div>
                     <div class="input-box">
                       <label>收件人姓名：</label>
@@ -45,30 +45,47 @@
             return {
                 address:'',
                 phone:'',
-                name:''
+                name:'',
+                info:''
             }
         },
         created() {
-
+            this.info = JSON.parse(localStorage.getItem('products'))
+            console.log(this.info )
         },
         methods: {
             submit() {
-                let params = {
-                    "key": "12345678",
-                    "Product": [{
-                        "ProductID": "20099AAF-9717-4594-B180-9F521C0B83FB",
-                        "count": "2",
-                        "address": "北京回龙观",
-                        "phone": "13199444516",
-                        "ReceiveName": "潘浩",
-                        "QRCode": "E5EC0168-9BA3-4F9B-B47E-F118F85F5B27"
-                    }]
+                if(this.name && this.address && this.phone) {
+                        let params = {
+                            "key": "12345678",
+                            "Product": [{
+                                "ProductID": this.info[0].ProductID,
+                                "count": this.info.length,
+                                "address": this.address,
+                                "phone": this.phone,
+                                "ReceiveName": this.name,
+                                "QRCode": localStorage.getItem('ORCode')
+                            },{
+                                "ProductID": this.info[1].ProductID,
+                                "count": this.info.length,
+                                "address": this.address,
+                                "phone": this.phone,
+                                "ReceiveName": this.name,
+                                "QRCode": localStorage.getItem('ORCode')
+                                                           
+                            }]
+                        }
+                        this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
+                            if(res.status == 200) {
+                                this.$router.push('list')
+                            }else {
+                                $toast.showMsg(res.data.result.message)
+                            }
+                        }) 
+                }else {
+                    $toast.showMsg('请填写收货信息')
                 }
-                this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
-                    if(res.status == 200) {
-                        console.log(res)
-                    }
-                })                 
+                
             }           
             
         }
@@ -92,6 +109,14 @@
         margin: px2rem(20px) auto;
         background:url('../assets/image/img-box.gif') no-repeat top center;
         background-size: 100%;
+        img {
+            display:block;
+            width: px2rem(260px);
+            height: px2rem(140px);  
+            margin:px2rem(23px) px2rem(35px);
+            background:red;
+            border-radius:px2rem(8px);          
+        }
     }
     .right-icon {
         position: absolute;
@@ -152,13 +177,17 @@
             z-index:2;
         }
     }
+    .content {
+        position: relative;
+    }
     footer {
-        position:fixed;
+        // position:absolute;
         width: 100%;
         height:px2rem(316px);
         background:url('../assets/image/myorder-bottom.gif') no-repeat center center;
         background-size: 100%;
-        bottom: 0;
-        z-index:1;
+        // bottom: 0;
+        // z-index:1;
+        // margin-top:
     }
 </style>
