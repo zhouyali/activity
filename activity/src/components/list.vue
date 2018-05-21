@@ -2,16 +2,17 @@
 	<div class="container">
 		<div class="logo">
 		</div>
-		<div class="list" >
-			<div class="product clearfix" v-for="(item,index) in list" :key="index">
-				<img class="img fl" :src="item.productImg[0].productimgID" alt="">
-				<div class="info" v-html="item.htmldetial">			
+		<div class="list" v-if="list && list.length > 0">
+			<div class="product clearfix" v-for="(item,index) in list" :key="index" @click="skipToDetail(item.imghtmldetial)">
+				<img class="img fl" v-if="item.productImg &&item.productImg.length>0&& item.productImg[0].productimgID" :src="item.productImg[0].productimgID" alt="">
+                <img class="img fl" v-else src="" alt="">
+				<div class="info" v-if="item.htmldetial!==''" v-html="item.htmldetial">			
 				</div>
-				<span :class="{'checked':checkeds.indexOf(index) > -1}" @click="checkedProduct(item,index)"></span>
+				<span :class="{'checked':checkeds.indexOf(index) > -1}" @click.stop="checkedProduct(item,index)"></span>
 			</div>
             <i class="line-l"></i>
             <i class="line-r"></i>
-            <footer>
+            <footer class="{'fixed':!list || list.length <= 2}">
                 <div class="btns">
                     <span :class="{'active':activeBtn == 0}" class="my-order" @click="skipTo(0)"></span>
                     <span :class="{'avtive':activeBtn == 1}" @click="skipTo(1)"></span>
@@ -27,31 +28,24 @@
 				list:[],
 				activeBtn:0,
 				checkeds: [],
-				products:[]
+				products:[],
+                isBooked:false
 			}
 			
 		},
         created() {
-    //     	let params={
-    //     		"key": "12345678",
-				// "ORCode": "E5EC0168-9BA3-4F9B-B47E-F118F85F5B27"
-    //     	}
-    //     	this.$http.post('/Verification/ORCodeVerification',params).then((res)=>{
-    //     		if(res.data.result.code == '0002') {
-    //     			this.$router.push('myOrder')
-    //     		}else if(res.data.result.code == '0002') {
-        			this.getList()
-    //     		}else {
-    //     			$toast.showMsg(res.data.result.message)
-    //     		}
- 			// 	console.log(res.data.result)
-    //     	})
-        	
+            var backMsg;
+            this.$route.query.backMsg?backMsg = this.$route.query.backMsg:backMsg='';
+            if(backMsg == 'ok'||(localStorage.getItem('isBooked')&&localStorage.getItem('isBooked') == 'ok')) {
+                this.isBooked = true
+            }else {
+                 this.isBooked = false
+            }
+            this.getList()
         },
 		methods: {
 		    getList() {
 	            this.$http.post('/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
-	            	console.log(res)
 	            	if(res.status == 200) {
 	            		this.list = res.data.result;
 	            	}else {
@@ -59,16 +53,35 @@
 	            	}
 	            })
 		    },
+            skipToDetail(detail){
+                if(detail) {
+                    this.$router.push({path:'listDetail',query:{'detail':detail}})
+                }else {
+                    $toast.showMsg('暂无详情')
+                }
+                
+            },
 			skipTo(n) {
 				if(n == 0) {
-					this.$router.push('myOrder')
+                    if(this.isBooked) {
+                        this.$router.push({path:'myOrder',query:{'backToMsg':'ok'}});
+                    }else {
+                        this.$router.push({path:'myOrder'})
+                    }
+					
+                    
 				}else {
 					if (this.checkeds.length < 1) {
 	            		$toast.showMsg('请选择商品')
 	            		return false;
-	            	}
-					this.$router.push({'path':'itemdetail'});
-					localStorage.setItem('products',JSON.stringify(this.products))
+	            	}else if(this.isBooked){
+                        $toast.showMsg('您已预定过商品')
+                        return false;
+                    }else {
+                        this.$router.push({'path':'itemdetail'});
+                        localStorage.setItem('products',JSON.stringify(this.products));                       
+                    }
+
 				}
 			},
             goToDetail() {
@@ -106,6 +119,7 @@
         background:url('../assets/image/card.gif') no-repeat top center;
         background-size: 100%;
         position:relative;
+        overflow: hidden;
 		.info {
             padding-top: px2rem(40px);
             padding-left: px2rem(450px);
@@ -150,6 +164,11 @@
         z-index:1;
         background: url('../assets/image/list-bottom.gif') no-repeat center bottom;
         background-size: 100%;
+        &.fixed  {
+            position: fixed;
+            bottom: 0;
+            left:0; 
+        }
     }    
 	.btns {
 		position: absolute;

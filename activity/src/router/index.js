@@ -7,6 +7,7 @@ const SubOrder = () => import('@/components/subOrder');
 const MyOrder = () => import('@/components/myOrder');
 const ItemDetail = () => import('@/components/itemDetail');
 const CheckOrder = ()=> import('@/components/checkOrder');
+const ListDetail = ()=> import('@/components/ListDetail');
 
 Vue.use(Router);
 const $router = new Router({
@@ -17,6 +18,11 @@ const $router = new Router({
             name: 'checkOrder',
             component: checkOrder
         },
+        {
+            path: '/listDetail',
+            name: 'listDetail',
+            component: ListDetail
+        },        
         {
             path: '/list',
             name: 'list',

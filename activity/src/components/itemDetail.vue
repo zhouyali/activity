@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="bg-img">
-            <div class="info clearfix" :class="{'pd-top':index==0,'pd-bottom':index==1}" v-for="(item,index) in info">
-                <div class="detail-top" v-show="index==1"></div>    
+            <div class="info clearfix" :class="{'pd-top':index==0,'pd-bottom':index==1,'ma-top':(index == 1)&& (item.productImg.length=1),'ma-top2':(index == 1)&& (item.productImg.length=2)}" v-for="(item,index) in info">
+                <div class="detail-top" v-show="index==1 && item.productImg.length > 1"></div>    
                 <div class="product-name pl">
                     {{item.ProductName}}
                 </div>
@@ -11,8 +11,13 @@
                 <div v-html="item.htmldetial" class="detail pl">
                 </div>
                 <div class="detail-line fr" v-show="index == 1"></div>
-                <img class="fir-img" :src="item.productImg[1].productimgID">
-                <img class="sec-img" :src="item.productImg[2].productimgID">
+                <template v-if="item.productImg.length = 1">
+                    <img class="fir-img" v-show='item.productImg[0].sort ==2' src="item.productImg[0].productimgID">
+                </template>
+                <template v-else-if="item.productImg.length = 2">
+                    <img class="fir-img"  v-show='item.productImg[0].sort ==2' src="item.productImg[0].productimgID">
+                    <img class="sec-img"  v-show='item.productImg[1].sort ==2' :src="item.productImg[1].productimgID">
+                </template>                
             </div>
         </div>
         <footer>
@@ -35,6 +40,7 @@
         },
         created() {
             this.info = JSON.parse(localStorage.getItem('products'))
+            console.log(localStorage.getItem('QRCode'),222)
         },
         methods: {
             submit() {
@@ -61,7 +67,12 @@
         &.pd-top {
             padding-top: px2rem(100px);
         }
-       
+        &.ma-top {
+            margin-top: px2rem(180px);
+        }
+        &.ma-top2 {
+            margin-top: px2rem(270px);
+        }
         .detail-top {
             height:px2rem(158px);
             width:100%;

@@ -2,15 +2,21 @@
     <div class="container">
         <div class="bg-img">
         </div>
-        <div class="img-box clearfix">
+        <div class="img-box clearfix" :class="{'center':info.length <=1}">
+        <template v-if="info && info.length >=2">
             <div class="product-images fl">
-                <img :src="info[0].productImg[4].productimgID" alt="">
-                
+                <img :src="info[0].productImg[0].productimgID" alt="">
             </div>
             <div class="product-images fr">
-                <img :src="info[1].productImg[4].productimgID" alt="">
+                <img :src="info[1].productImg[0].productimgID" alt="">
                 
             </div> 
+        </template>
+        <template v-if="info && info.length <=1">
+            <div class="product-images">
+                <img :src="info[0].productImg[0].productimgID" alt="">
+            </div>
+        </template>        
         </div>
         <div class="content">     
             <form>
@@ -46,17 +52,21 @@
                 address:'',
                 phone:'',
                 name:'',
-                info:''
+                info:'',
+                QRCode:''
             }
         },
         created() {
             this.info = JSON.parse(localStorage.getItem('products'))
-            console.log(this.info )
+            this.QRCode = localStorage.getItem('QRCode')
+
         },
         methods: {
             submit() {
                 if(this.name && this.address && this.phone) {
-                        let params = {
+                          var params;
+                  if(this.info.length ==1) {
+                        params = {
                             "key": "12345678",
                             "Product": [{
                                 "ProductID": this.info[0].ProductID,
@@ -64,24 +74,39 @@
                                 "address": this.address,
                                 "phone": this.phone,
                                 "ReceiveName": this.name,
-                                "QRCode": localStorage.getItem('ORCode')
+                                "QRCode": this.QRCode
+                            }] 
+                        }                   
+                    }else {
+                        params = {
+                            "key": "12345678",
+                            "Product": [{
+                                "ProductID": this.info[0].ProductID,
+                                "count": this.info.length,
+                                "address": this.address,
+                                "phone": this.phone,
+                                "ReceiveName": this.name,
+                                "QRCode":this.QRCode
                             },{
                                 "ProductID": this.info[1].ProductID,
                                 "count": this.info.length,
                                 "address": this.address,
                                 "phone": this.phone,
                                 "ReceiveName": this.name,
-                                "QRCode": localStorage.getItem('ORCode')
+                                "QRCode":this.QRCode
                                                            
                             }]
+                        }                        
+                    }
+                    this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
+                        console.log(res.data.result.code)
+                        if(res.data.result.code == '0000') {
+                            this.$router.push('myOrder');
+                            $toast.showMsg('提交成功！')
+                        }else {
+                            $toast.showMsg(res.data.result.message)
                         }
-                        this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
-                            if(res.status == 200) {
-                                this.$router.push('list')
-                            }else {
-                                $toast.showMsg(res.data.result.message)
-                            }
-                        }) 
+                    }) 
                 }else {
                     $toast.showMsg('请填写收货信息')
                 }
@@ -101,6 +126,9 @@
 
     .img-box {
         padding:0 px2rem(36px);
+    }
+    .center {
+        text-align: center;
     }
     .product-images {
         display: inline-block;

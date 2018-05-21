@@ -2,11 +2,11 @@
     <div class="container">
         <div class="bg-img">
         </div>
-        <div class="img-box clearfix">
-            <div class="product-images fl">
+        <div class="img-box clearfix" :class="{'center':imgR==''}">
+            <div class="product-images" :class="{' fl':imgR!==''}">
                 <img :src="imgL" alt="">
             </div>
-            <div class="product-images fr">
+            <div class="product-images fr" v-show="imgR!==''">
                 <img :src="imgR" alt="">
             </div> 
         </div> 
@@ -21,9 +21,7 @@
                       <input type="text" :value="code" placeholder="" required>
                     </div>
                     <div class="station" v-for="(item,index) in traces">{{item.AcceptTime}}<span>{{item.AcceptStation}}</span></div>
-                    <router-link to='/'>
-                        <div class="btn"></div> 
-                    </router-link>                           
+                    <div class="btn" @click="backTo"></div>                          
                 </fieldset>
             </form> 
             <footer>
@@ -36,7 +34,7 @@
     export default {
         data() {
             return {
-                code:'2121212121212121',
+                code:'',
                 info:'',
                 imgL:'',
                 imgR:'',
@@ -44,32 +42,51 @@
             }
         },
         created() {
-            if(localStorage.getItem('products')) {
-                this.info = JSON.parse(localStorage.getItem('products'))
+            var backToMsg = this.$route.query.backToMsg;
+            if(this.$route.query&&this.$route.query.isOrder=='1'||backToMsg=='ok') {
+                this.info = JSON.parse(localStorage.getItem('product'))
+                if(this.info.length ==2) {
+                    this.imgL =this.info[0].productimg;
+                    this.imgR=this.info[1].productimg;
+                }else {
+                    this.imgL =this.info[0].productimg;
+                    this.imgR='';                    
+                }
+                if(localStorage.getItem('LogisticCode')!==null) {
+                     this.code = '我们会尽快为您发货'
+                }else {
+                    this.code =  localStorage.getItem('LogisticCode');
+                }
+                this.traces = JSON.parse(localStorage.getItem('traces'));
+                localStorage.setItem('isBooked','ok')
+
+            }else if(localStorage.getItem('products')||backToMsg=='ok') {
+                this.info = JSON.parse(localStorage.getItem('products'));
+                console.log(this.info)
+                var d =  new Date();
+                var date = d.toLocaleDateString();
+                var time=d.toLocaleTimeString()
+                this.traces = [{'AcceptTime':d.toLocaleString(),'AcceptStation':'暂无物流'}];  
+                this.code = '我们会尽快为您发货'; 
+                if(this.info.length ==2) {
+                    this.imgL =this.info[0].productImg[0].productimgID;
+                    this.imgR=this.info[1].productImg[0].productimgID;                 
+                }else {
+                    this.imgL =this.info[0].productImg[0].productimgID;
+                }
+                localStorage.setItem('isBooked','ok')
+            }else {
+                $toast.showMsg('请先预定礼物')
             }
-            this.info?this.imgL = this.info[0].productImg[4].productimgID:localStorage.getItem('product')[0].productimg;
-            this.info? this.imgR = this.info[1].productImg[4].productimgID:localStorage.getItem('product')[1].productimg;
-            this.code = localStorage.getItem('LogisticCode');
-            this.traces = JSON.parse(localStorage.getItem('traces'));
+
         },
         methods: {
-            getLog() {
-                // let params={
-                //     "RequestData": {
-                //         "OrderCode": "",
-                //         "ShipperCode": 'SF',//localStorage.getItem('ShipperCode'),
-                //         "LogisticCode": '118650888018',//localStorage.getItem('LogisticCode'),
-                //     },  
-                //     "EBusinessID": "1344159",
-                //     "RequestType":"1002",
-                //     "AppKey":"891eed32-9790-40be-891a-756513e25c50",
-                //     "dataSign":"OGY0Y2JhOGQ0YjRlNzc0ZTM5MWM4MzYzMDVjMTA0ODk=",
-                //     "DataType":"2"
-                // }
-                // this.traces = localStorage.getItem('traces');
-                // this.$http.post('/Ebusiness/EbusinessOrderHandle.aspx',params).then(()=>{
-
-                // })
+            backTo() {
+                if(localStorage.getItem('isBooked')=='ok'||this.$route.query.isOrder=='1') {
+                    this.$router.push({path:'list',query:{'backMsg':'ok'}})
+                }else {
+                     this.$router.push({path:'list'})
+                }
             }
             
         }
@@ -82,12 +99,14 @@
         background: url('../assets/image/myorder-top.gif') no-repeat top center;
         background-size: 100%;
     }
-
+    .center {
+        text-align: center;
+    }
     .img-box {
         padding:0 px2rem(36px);
     }
     .station {
-        padding:px2rem(20px) px2rem(50px);
+        padding:px2rem(20px) px2rem(60px);
     }
     .product-images {
         display: inline-block;
