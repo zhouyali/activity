@@ -3,7 +3,9 @@
         <div class="content pd-botom" ref='content' v-html="detail">
             
          </div>
-         <footer class="bottom"></footer>
+         <footer class="bottom">
+            <span class="btn back" @click="goToBack"></span>
+         </footer>
     </div>
 </template>
 <script>
@@ -26,6 +28,9 @@
                     result = result.replace(/\s/g,"");
                  }
                 return result;
+            },
+            goToBack() {
+                this.$router.go(-1)
             }
         }
     }
@@ -53,5 +58,22 @@
     background: url('../assets/image/bg-btm.gif') no-repeat top center;
     background-size:100%;
     z-index:3;
+}
+.btn {
+    display:inline-block;
+    width: px2rem(224px);
+    height:px2rem(56px);
+    background-size: 100%;
+    position: absolute;
+    bottom: px2rem(40px);
+    z-index:4;
+}
+.back {
+    background:url('../assets/image/back.jpg')
+    no-repeat center center;
+    background-size: 100%;
+    left:50%;
+    margin-left:px2rem(-112px);
+
 }
 </style>

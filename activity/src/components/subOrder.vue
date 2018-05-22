@@ -40,7 +40,7 @@
                 </fieldset>
             </form> 
             <footer>
-                    
+                  <span class="btn back" @click="goToBack"></span>  
             </footer>
         </div> 
     </div>
@@ -111,7 +111,10 @@
                     $toast.showMsg('请填写收货信息')
                 }
                 
-            }           
+            },
+            goToBack() {
+                 this.$router.go(-1);
+            }         
             
         }
     }
@@ -209,13 +212,27 @@
         position: relative;
     }
     footer {
-        // position:absolute;
         width: 100%;
         height:px2rem(316px);
         background:url('../assets/image/myorder-bottom.gif') no-repeat center center;
         background-size: 100%;
-        // bottom: 0;
+        // position: relative;
         // z-index:1;
-        // margin-top:
     }
+    .btn {
+        display:inline-block;
+        width: px2rem(224px);
+        height:px2rem(56px);
+        background-size: 100%;
+        position: absolute;
+        bottom: px2rem(40px);
+        background:url('../assets/image/back.jpg')
+        no-repeat center center;
+        background-size: 100%;
+        left:50%;  
+        margin-left:px2rem(-112px);
+        // z-index:2;      
+        
+    }
+
 </style>

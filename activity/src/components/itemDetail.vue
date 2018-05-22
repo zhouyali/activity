@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="bg-img">
-            <div class="info clearfix" :class="{'pd-top':index==0,'pd-bottom':index==1,'ma-top':(index == 1)&& (item.productImg.length=1),'ma-top2':(index == 1)&& (item.productImg.length=2)}" v-for="(item,index) in info">
-                <div class="detail-top" v-show="index==1 && item.productImg.length > 1"></div>    
+            <div class="info clearfix" :class="{'pd-top':index==0,'pd-bottom':index==1,'ma-top':(index == 1)&& (item.productImg.length=1)}" v-for="(item,index) in info">
+                <!-- <div class="detail-top" v-show="index==1 && item.productImg.length > 1"></div>     -->
                 <div class="product-name pl">
                     {{item.ProductName}}
                 </div>
@@ -21,7 +21,8 @@
             </div>
         </div>
         <footer>
-            <div class="btn" @click="submit"></div>
+            <span class="btn forwards" @click="submit"></span>
+            <span class="btn back" @click="goToBack"></span>
         </footer>
         <!-- <div class="content"> -->
 <!--         <footer>
@@ -46,6 +47,9 @@
             submit() {
                 this.$router.push('subOrder');
 
+            },
+            goToBack() {
+                 this.$router.go(-1);
             }
         }
     }
@@ -68,11 +72,9 @@
             padding-top: px2rem(100px);
         }
         &.ma-top {
-            margin-top: px2rem(180px);
+            margin-top: px2rem(150px);
         }
-        &.ma-top2 {
-            margin-top: px2rem(270px);
-        }
+
         .detail-top {
             height:px2rem(158px);
             width:100%;
@@ -121,16 +123,29 @@
         background-size: 100%;
         bottom: 0;
         z-index:1;
+        text-align: center;
     } 
     .btn {
+        display:inline-block;
         width: px2rem(224px);
         height:px2rem(56px);
-        background: url('../assets/image/book-btn.gif');
+        
         background-size: 100%;
         position: absolute;
         bottom: px2rem(40px);
-        left: 50%;
-        margin-left: px2rem(-112px);
+        
+    }
+    .forwards {
+        background: url('../assets/image/book-btn.gif') no-repeat center center;
+        background-size: 100%;
+        right: 19%;
+    }
+    .back {
+        background:url('../assets/image/back.jpg')
+        no-repeat center center;
+        background-size: 100%;
+        left:19%;
+
     }
     .detail {
         position: relative;

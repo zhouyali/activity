@@ -1,2 +1,0 @@
-webpackJsonp([0],{URxw:function(t,e,n){t.exports=n.p+"static/img/myorder-bottom.afd8bb9.gif"},kxFB:function(t,e){t.exports=function(t){return"string"!=typeof t?t:(/^['"].*['"]$/.test(t)&&(t=t.slice(1,-1)),/["'() \t\n]/.test(t)?'"'+t.replace(/"/g,'\\"').replace(/\n/g,"\\n")+'"':t)}}});
-//# sourceMappingURL=0.99ff508a8a469680ac35.js.map
