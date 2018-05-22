@@ -13,7 +13,7 @@
 module.exports = {
       proxy: {
         '/getProduct/getSinaProduct': {
-          target: 'http://101.201.154.210:9004',
+          target: 'http://sinagiftwebservice.lenovogift.com',
           changeOrigin: true,
           // pathRewrite: {
           //   '^/getProduct': ''
@@ -21,7 +21,7 @@ module.exports = {
           secure: false
         },
         '/ExchangedGood/SubmitProduct': {
-          target: 'http://101.201.154.210:9004',
+          target: 'http://sinagiftwebservice.lenovogift.com',
           changeOrigin: true,
           // pathRewrite: {
           //   '^/getProduct': ''
@@ -29,7 +29,7 @@ module.exports = {
           secure: false
         }, 
         '/Verification/ORCodeVerification': {
-          target: 'http://101.201.154.210:9004',
+          target: 'http://sinagiftwebservice.lenovogift.com',
           changeOrigin: true,
           // pathRewrite: {
           //   '^/getProduct': ''
