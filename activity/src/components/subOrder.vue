@@ -98,7 +98,7 @@
                             }]
                         }                        
                     }
-                    this.$http.post('http://sinagiftwebservice.lenovogift.com/ExchangedGood/SubmitProduct',params).then((res)=> {
+                    this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
                         console.log(res.data.result.code)
                         if(res.data.result.code == '0000') {
                             this.$router.push('myOrder');

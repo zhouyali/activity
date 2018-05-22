@@ -30,7 +30,7 @@
                 }
             });
             console.log(localStorage.getItem('QRCode'),1111)
-            this.$http.post('http://sinagiftwebservice.lenovogift.com/Verification/ORCodeVerification',params).then((res)=>{
+            this.$http.post('/Verification/ORCodeVerification',params).then((res)=>{
                 console.log(res.data)
                     if(res.data.result[0].code == '0002') {
                         localStorage.setItem('LogisticCode',res.data.result[0].LogisticsMessage.LogisticCode)

@@ -45,7 +45,7 @@
         },
 		methods: {
 		    getList() {
-	            this.$http.post('http://sinagiftwebservice.lenovogift.com/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
+	            this.$http.post('/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
 	            	if(res.status == 200) {
 	            		this.list = res.data.result;
 	            	}else {
