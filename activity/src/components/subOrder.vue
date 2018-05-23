@@ -9,7 +9,7 @@
             </div>
             <div class="product-images fr">
                 <img :src="info[1].productImg[0].productimgID" alt="">
-                
+                <img style="display:block;width:100%;" alt="">
             </div> 
         </template>
         <template v-if="info && info.length <=1">
@@ -46,6 +46,7 @@
     </div>
 </template>
 <script>
+import {is_weixin} from '@/assets/js/tools'
     export default {
         data() {
             return {
@@ -53,10 +54,14 @@
                 phone:'',
                 name:'',
                 info:'',
-                QRCode:''
+                QRCode:'',
+                timer:null
             }
         },
         created() {
+            if(this.timer) {
+                clearTimeout(this.timer)
+            }
             this.info = JSON.parse(localStorage.getItem('products'))
             this.QRCode = localStorage.getItem('QRCode')
 
@@ -100,10 +105,18 @@
                     }
                     this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
                         if(res.data.result.code == '0000') {
+                            localStorage.setItem('subProducts',JSON.stringify(this.info))
                             this.$router.push('myOrder');
                             $toast.showMsg('提交成功！');
+                            localStorage.removeItem('products');
+                            localStorage.setItem('subAlready','ok')
+                            if(is_weixin) {
+                                this.timer = setTimeout(()=>{
+                                    WeixinJSBridge.call('closeWindow');
+                                },2000)               
+                            }
                         }else {
-                            $toast.showMsg(res.data.result.message)
+                            $toast.showMsg(res.data.result.message);
                         }
                     }) 
                 }else {
@@ -119,6 +132,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    .container {
+        -webkit-overflow-scrolling: touch;
+    }
     .bg-img {
         height: px2rem(388px);
         width: 100%;

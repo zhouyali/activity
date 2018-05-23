@@ -19,13 +19,14 @@
                     <div class="input-box">
                       <label>快递信息：</label>
                       <input type="text" :value="code" placeholder="" required>
+                      
                     </div>
                     <div class="station" v-for="(item,index) in traces">{{item.AcceptTime}}<span>{{item.AcceptStation}}</span></div>
-                    <div class="btn" @click="backTo"></div>                          
+                                            
                 </fieldset>
             </form> 
             <footer>
-                
+                <div class="btn" @click="backTo"></div>  
             </footer>
         </div> 
     </div>
@@ -35,7 +36,7 @@
         data() {
             return {
                 code:'',
-                info:'',
+                info:[],
                 imgL:'',
                 imgR:'',
                 traces:[]
@@ -43,8 +44,9 @@
         },
         created() {
             var backToMsg = this.$route.query.backToMsg;
-            if(this.$route.query&&this.$route.query.isOrder=='1'||backToMsg=='ok') {
+            if((this.$route.query&&this.$route.query.isOrder=='1')||backToMsg=='ok') {
                 this.info = JSON.parse(localStorage.getItem('product'))
+                console.log(this.info)
                 if(this.info.length ==2) {
                     this.imgL =this.info[0].productimg;
                     this.imgR=this.info[1].productimg;
@@ -60,7 +62,7 @@
                 this.traces = JSON.parse(localStorage.getItem('traces'));
                 localStorage.setItem('isBooked','ok')
 
-            }else if(localStorage.getItem('products')||backToMsg=='ok') {
+            }else if(localStorage.getItem('subProducts')||backToMsg=='ok'||localStorage.getItem('products')) {
                 this.info = JSON.parse(localStorage.getItem('products'));
                 console.log(this.info)
                 var d =  new Date();
@@ -170,15 +172,13 @@
                 border-radius: px2rem(8px);
                 font-size: px2rem(24px);
                 text-align: center;
+                display: inline-block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }   
         }
-        .btn {
-            width: px2rem(493px);
-            height:px2rem(56px);
-            background:url('../assets/image/back.gif') no-repeat center center;
-            background-size: 100%;
-            margin: 0 auto;
-        }
+
     }
     footer {
         position:fixed;
@@ -187,5 +187,12 @@
         background:url('../assets/image/myorder-bottom.gif') no-repeat center center;
         background-size: 100%;
         bottom: 0;
+        .btn {
+            width: px2rem(493px);
+            height:px2rem(56px);
+            background:url('../assets/image/back.gif') no-repeat center center;
+            background-size: 100%;
+            margin: px2rem(50px) auto;
+        }        
     }
 </style>

@@ -1,8 +1,9 @@
 <template>
     <div class="container">
         <div class="bg-img">
+        </div>
+        <div class="info-wrap">
             <div class="info clearfix" :class="{'pd-top':index==0,'pd-bottom':index==1,'ma-top':(index == 1)&& (item.productImg.length=1)}" v-for="(item,index) in info">
-                <!-- <div class="detail-top" v-show="index==1 && item.productImg.length > 1"></div>     -->
                 <div class="product-name pl">
                     {{item.ProductName}}
                 </div>
@@ -14,22 +15,16 @@
                 <template v-if="item.productImg.length = 1">
                     <img class="fir-img" v-show='item.productImg[0].sort ==2' src="item.productImg[0].productimgID">
                 </template>
-                <template v-else-if="item.productImg.length = 2">
+<!--                 <template v-else-if="item.productImg.length = 2">
                     <img class="fir-img"  v-show='item.productImg[0].sort ==2' src="item.productImg[0].productimgID">
                     <img class="sec-img"  v-show='item.productImg[1].sort ==2' :src="item.productImg[1].productimgID">
-                </template>                
+                </template>   -->              
             </div>
+            <footer :class="{'fixed':info.length <=1}">
+                <span class="btn forwards" @click="submit"></span>
+                <span class="btn back" @click="goToBack"></span>
+            </footer>            
         </div>
-        <footer>
-            <span class="btn forwards" @click="submit"></span>
-            <span class="btn back" @click="goToBack"></span>
-        </footer>
-        <!-- <div class="content"> -->
-<!--         <footer>
-            <div class="btn" @click="submit"></div>
-        </footer> -->
-        <!-- </div> -->
-        
     </div>
 </template>
 <script>
@@ -55,18 +50,31 @@
     }
 </script>
 <style lang="scss" scoped>
-.container {
-            padding-bottom:px2rem(316px);
-}
+    .container {
+        position: relative;
+        min-height:100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling:touch;
+    }
     .bg-img {
         height: px2rem(793px);
         width: 100%;
         background: url('../assets/image/book-detail.gif') no-repeat center top;
         background-size: 100%;
-        padding-top:px2rem(150px);
-        position: relative;
+        /*padding-top:px2rem(150px);*/
+        position: absolute;
+        z-index:1;
     }
-
+    .info-wrap {
+        height: auto;
+        overflow: auto;
+        width:100%;
+        min-height:100%;
+        position: relative;
+        top:px2rem(150px);
+        z-index:2;
+        padding-bottom: px2rem(316px);
+    }
     .info {
         .pl {
             padding-left: px2rem(160px); 
@@ -125,9 +133,15 @@
         background:url('../assets/image/myorder-bottom.gif') no-repeat center bottom;
         background-size: 100%;
         bottom: 0;
-        // z-index:1;
+        left:0;
         text-align: center;
+        z-index:2;
     } 
+    .fixed {
+        position: fixed;
+        bottom:0;
+        left:0;
+    }
     .btn {
         display:inline-block;
         width: px2rem(224px);

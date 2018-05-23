@@ -12,7 +12,7 @@
 			</div>
             <i class="line-l"></i>
             <i class="line-r"></i>
-            <footer class="{'fixed':!list || list.length <= 2}">
+            <footer :class="{'fixed':!list || list.length < 2}">
                 <div class="btns">
                     <span :class="{'active':activeBtn == 0}" class="my-order" @click="skipTo(0)"></span>
                     <span :class="{'avtive':activeBtn == 1}" @click="skipTo(1)"></span>
@@ -31,11 +31,13 @@
 				products:[],
                 isBooked:false
 			}
+			
 		},
         created() {
             var backMsg;
             this.$route.query.backMsg?backMsg = this.$route.query.backMsg:backMsg='';
-            if(backMsg == 'ok'||(localStorage.getItem('isBooked')&&localStorage.getItem('isBooked') == 'ok')) {
+            let subAlready = localStorage.getItem('subAlready');
+            if(backMsg == 'ok'||(localStorage.getItem('isBooked')&&localStorage.getItem('isBooked') == 'ok')||subAlready=='ok') {
                 this.isBooked = true
             }else {
                  this.isBooked = false
@@ -67,8 +69,6 @@
                     }else {
                         this.$router.push({path:'myOrder'})
                     }
-					
-                    
 				}else {
 					if (this.checkeds.length < 1) {
 	            		$toast.showMsg('请选择商品')
@@ -104,9 +104,8 @@
 	}
 </script>
 <style lang="scss" scoped>
-    .container {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+    .container{
+       -webkit-overflow-scrolling:touch;
     }
 	.logo {
 		width: 100%;
@@ -157,7 +156,6 @@
         position: relative;
         padding-bottom: px2rem(113px);
         -webkit-overflow-scrolling: touch;
-        overflow-y: scroll;
     }
     footer {
         position: absolute;

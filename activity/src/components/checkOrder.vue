@@ -4,17 +4,22 @@
     </div>
 </template>
 <script>
+import {is_weixin} from '@/assets/js/tools'
     export default {
         data() {
             return {
-                message: ''
+                message: '',
+                timer:null
             }
         },
         created() {
-            localStorage.removeItem('products');
+            if(this.timer) {
+                clearTimeout(this.timer)
+            }
+            localStorage.removeItem('product');
             localStorage.removeItem('products');
             localStorage.removeItem('isBooked');
-            localStorage.removeItem('QRCode')
+            localStorage.removeItem('QRCode');
             let search = location.search;
             if (!search || search.indexOf('QRCode=') === -1) {
                 $toast.showMsg('参数解析失败')
@@ -31,17 +36,22 @@
             });
             console.log(localStorage.getItem('QRCode'),1111)
             this.$http.post('/Verification/ORCodeVerification',params).then((res)=>{
-                console.log(res.data)
-                    if(res.data.result[0].code == '0002') {
+                    if(res.data.result[0].code === "0002") {
                         localStorage.setItem('LogisticCode',res.data.result[0].LogisticsMessage.LogisticCode)
                         localStorage.setItem('ShipperCode',res.data.result[0].LogisticsMessage.ShipperCode)
                         localStorage.setItem('traces',JSON.stringify(res.data.result[0].LogisticsMessage.Traces));
                         localStorage.setItem('product',JSON.stringify(res.data.result[0].product))
                         this.$router.push({path:'myOrder',query:{'isOrder':'1'}})
-                    }else if(res.data.result[0].code == '0000') {
+                    }else if(res.data.result[0].code === "0000") {
                         this.$router.push('list')
                     }else {
                         $toast.showMsg(res.data.result.message);
+                        if(is_weixin) {
+                            this.timer = setTimeout(()=>{
+                                WeixinJSBridge.call('closeWindow');
+                            },3000)               
+                        }
+
                     }
 
             })
