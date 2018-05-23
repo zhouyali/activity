@@ -62,9 +62,8 @@
                 this.traces = JSON.parse(localStorage.getItem('traces'));
                 localStorage.setItem('isBooked','ok')
 
-            }else if(localStorage.getItem('subProducts')||backToMsg=='ok'||localStorage.getItem('products')) {
-                this.info = JSON.parse(localStorage.getItem('products'));
-                console.log(this.info)
+            }else if(localStorage.getItem('subProducts')||backToMsg=='ok') {
+                this.info = JSON.parse(localStorage.getItem('subProducts'));
                 var d =  new Date();
                 var date = d.toLocaleDateString();
                 var time=d.toLocaleTimeString()
@@ -122,7 +121,6 @@
             width: px2rem(260px);
             height: px2rem(140px);  
             margin:px2rem(23px) px2rem(35px);
-            background:red;
             border-radius:px2rem(8px);          
         }
     }

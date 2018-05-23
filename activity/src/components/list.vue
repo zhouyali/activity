@@ -10,8 +10,8 @@
 				</div>
 				<span :class="{'checked':checkeds.indexOf(index) > -1}" @click.stop="checkedProduct(item,index)"></span>
 			</div>
-            <i class="line-l"></i>
-            <i class="line-r"></i>
+<!--             <i class="line-l"></i>
+            <i class="line-r"></i> -->
             <footer :class="{'fixed':!list || list.length < 2}">
                 <div class="btns">
                     <span :class="{'active':activeBtn == 0}" class="my-order" @click="skipTo(0)"></span>
@@ -121,6 +121,7 @@
         background:url('../assets/image/card.gif') no-repeat top center;
         background-size: 100%;
         position:relative;
+        z-index:1;
         overflow: hidden;
 		.info {
             padding-top: px2rem(40px);
@@ -187,11 +188,13 @@
             text-align: center;
             background:url('../assets/image/submit.gif') no-repeat center center;
             background-size: 100%;
+            padding: px2rem(15px) 0;
 		}
         .my-order {
             background:url('../assets/image/myorder.gif') no-repeat center center;
             background-size: 100%;
             margin-right: px2rem(50px);
+            padding: px2rem(15px) 0;
         }
 	}
 </style>

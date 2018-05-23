@@ -160,7 +160,6 @@ import {is_weixin} from '@/assets/js/tools'
             width: px2rem(260px);
             height: px2rem(140px);  
             margin:px2rem(23px) px2rem(35px);
-            background:red;
             border-radius:px2rem(8px);          
         }
     }

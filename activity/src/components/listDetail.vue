@@ -55,7 +55,6 @@ import {Trim} from '@/assets/js/tools'
     overflow:hidden;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    margin-bottom: px2rem(-200px);
     width:100%;
 }
 .bottom {

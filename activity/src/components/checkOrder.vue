@@ -18,8 +18,12 @@ import {is_weixin} from '@/assets/js/tools'
             }
             localStorage.removeItem('product');
             localStorage.removeItem('products');
+            localStorage.removeItem('subProducts')
             localStorage.removeItem('isBooked');
             localStorage.removeItem('QRCode');
+            localStorage.removeItem('LogisticCode')
+            localStorage.removeItem('ShipperCode')
+            localStorage.removeItem('traces');            
             let search = location.search;
             if (!search || search.indexOf('QRCode=') === -1) {
                 $toast.showMsg('参数解析失败')
@@ -42,7 +46,7 @@ import {is_weixin} from '@/assets/js/tools'
                         localStorage.setItem('traces',JSON.stringify(res.data.result[0].LogisticsMessage.Traces));
                         localStorage.setItem('product',JSON.stringify(res.data.result[0].product))
                         this.$router.push({path:'myOrder',query:{'isOrder':'1'}})
-                    }else if(res.data.result[0].code === "0000") {
+                    }else if(res.data.result[0].code === "0000") {                   
                         this.$router.push('list')
                     }else {
                         $toast.showMsg(res.data.result.message);
