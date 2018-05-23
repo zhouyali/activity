@@ -99,10 +99,9 @@
                         }                        
                     }
                     this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
-                        console.log(res.data.result.code)
                         if(res.data.result.code == '0000') {
                             this.$router.push('myOrder');
-                            $toast.showMsg('提交成功！')
+                            $toast.showMsg('提交成功！');
                         }else {
                             $toast.showMsg(res.data.result.message)
                         }

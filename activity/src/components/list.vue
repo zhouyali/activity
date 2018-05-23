@@ -31,7 +31,6 @@
 				products:[],
                 isBooked:false
 			}
-			
 		},
         created() {
             var backMsg;
@@ -105,6 +104,10 @@
 	}
 </script>
 <style lang="scss" scoped>
+    .container {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 	.logo {
 		width: 100%;
 		height: px2rem(804px);
@@ -154,6 +157,7 @@
         position: relative;
         padding-bottom: px2rem(113px);
         -webkit-overflow-scrolling: touch;
+        overflow-y: scroll;
     }
     footer {
         position: absolute;

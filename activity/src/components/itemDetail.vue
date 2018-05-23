@@ -55,6 +55,9 @@
     }
 </script>
 <style lang="scss" scoped>
+.container {
+            padding-bottom:px2rem(316px);
+}
     .bg-img {
         height: px2rem(793px);
         width: 100%;
@@ -122,7 +125,7 @@
         background:url('../assets/image/myorder-bottom.gif') no-repeat center bottom;
         background-size: 100%;
         bottom: 0;
-        z-index:1;
+        // z-index:1;
         text-align: center;
     } 
     .btn {
