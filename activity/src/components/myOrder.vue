@@ -25,10 +25,10 @@
                                             
                 </fieldset>
             </form> 
-            <footer>
-                <div class="btn" @click="backTo"></div>  
-            </footer>
         </div> 
+        <footer>
+            <div class="btn" @click="backTo"></div>  
+        </footer>       
     </div>
 </template>
 <script>
@@ -54,20 +54,24 @@
                     this.imgL =this.info[0].productimg;
                     this.imgR='';                    
                 }
-                if(localStorage.getItem('LogisticCode')!==null) {
-                     this.code = '我们会尽快为您发货'
+                console.log(localStorage.getItem('LogisticCode'),'090909')
+                if(localStorage.getItem('LogisticCode') == "null") {
+                     console.log(localStorage.getItem('LogisticCode'),'1234')
+                     this.code = '订单号尚未上传'
                 }else {
                     this.code =  localStorage.getItem('LogisticCode');
                 }
                 this.traces = JSON.parse(localStorage.getItem('traces'));
+                if(!this.traces || this.traces.length <= 0) {
+                    var d =  new Date();
+                    var date = d.toLocaleDateString();
+                    var time=d.toLocaleTimeString();
+                    this.traces = [{'AcceptTime':d.toLocaleString(),'AcceptStation':'暂无物流'}];    
+                }              
                 localStorage.setItem('isBooked','ok')
 
             }else if(localStorage.getItem('subProducts')||backToMsg=='ok') {
                 this.info = JSON.parse(localStorage.getItem('subProducts'));
-                var d =  new Date();
-                var date = d.toLocaleDateString();
-                var time=d.toLocaleTimeString()
-                this.traces = [{'AcceptTime':d.toLocaleString(),'AcceptStation':'暂无物流'}];  
                 this.code = '我们会尽快为您发货'; 
                 if(this.info.length ==2) {
                     this.imgL =this.info[0].productImg[0].productimgID;
@@ -94,6 +98,10 @@
     }
 </script>
 <style lang="scss" scoped>
+    .container {
+        padding-bottom: px2rem(320px);
+        -webkit-overflow-scrolling:touch;
+    }
     .bg-img {
         height: px2rem(388px);
         width: 100%;
@@ -124,10 +132,10 @@
             border-radius:px2rem(8px);          
         }
     }
-    .content {
+/*    .content {
         padding-bottom:px2rem(316px);
         position: relative;
-    }
+    }*/
     .right-icon {
         position: absolute;
         top:px2rem(-43px);

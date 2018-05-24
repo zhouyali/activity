@@ -4,14 +4,14 @@
 		</div>
 		<div class="list" v-if="list && list.length > 0">
 			<div class="product clearfix" v-for="(item,index) in list" :key="index" @click="skipToDetail(item.imghtmldetial)">
-				<img class="img fl" v-if="item.productImg &&item.productImg.length>0&& item.productImg[0].productimgID" :src="item.productImg[0].productimgID" alt="">
-                <img class="img fl" v-else src="" alt="">
+                <div class="imgBox fl">
+    				<img class="" v-if="item.productImg &&item.productImg.length>0&& item.productImg[0].productimgID" :src="item.productImg[0].productimgID" alt="">
+                    <img class="" v-else src="" alt="">
+                </div>
 				<div class="info" v-if="item.htmldetial!==''" v-html="item.htmldetial">			
 				</div>
-				<span :class="{'checked':checkeds.indexOf(index) > -1}" @click.stop="checkedProduct(item,index)"></span>
+				<span class="span" :class="{'checked':checkeds.indexOf(index) > -1}" @click.stop="checkedProduct(item,index)"><i></i></span>
 			</div>
-<!--             <i class="line-l"></i>
-            <i class="line-r"></i> -->
             <footer :class="{'fixed':!list || list.length < 2}">
                 <div class="btns">
                     <span :class="{'active':activeBtn == 0}" class="my-order" @click="skipTo(0)"></span>
@@ -31,7 +31,6 @@
 				products:[],
                 isBooked:false
 			}
-			
 		},
         created() {
             var backMsg;
@@ -117,7 +116,7 @@
         width:px2rem(690px);
         height:px2rem(220px);
         box-shadow: px2rem(5px) px2rem(5px) px2rem(5px) #E7E7E6;
-		margin:0 auto;
+		margin:0 auto px2rem(20px);
         background:url('../assets/image/card.gif') no-repeat top center;
         background-size: 100%;
         position:relative;
@@ -127,28 +126,52 @@
             padding-top: px2rem(40px);
             padding-left: px2rem(450px);
 		}
-		span {
-			display:block;
-			position: absolute;
-			width:px2rem(36px);
-			height:px2rem(36px);
-			border-radius:50%;
-			border:2px solid #78c25e;
-			left: px2rem(20px);
-			top:50%;
-			margin-top:px2rem(-18px);
-		}
-		.checked {
-			background: #78C25E !important;
-		}
+    span {
+            box-sizing:border-box;
+            display:block;
+            position: absolute;
+            width:px2rem(48px);
+            height:px2rem(48px);
+            border-radius:50%;
+            left: px2rem(20px);
+            top:50%;
+            margin-top:px2rem(-18px);
+            color:#78C25E;
+            border:px2rem(3px) solid currentColor;
+            background-clip:content-box;
+            transition:.3s;
+            padding:px2rem(6px);
+        }
+
+        span.checked {
+            background-color: currentColor;
+        }
 	}
-	.img {
+/*	.img {
 		background: yellow;
 		width: px2rem(320px);
 		height: px2rem(169px);
         border-radius: px2rem(15px);
-        margin: px2rem(22px) 0 px2rem(22px) px2rem(70px);
-	}
+        margin: px2rem(22px) 0 px2rem(22px) px2rem(90px);
+	}*/
+    .imgBox{
+       position:relative;
+       overflow: hidden;
+        width: px2rem(320px);
+        height: px2rem(169px);  
+        border-radius: px2rem(15px);
+        margin: px2rem(22px) 0 px2rem(22px) px2rem(90px);
+    }
+    .imgBox>img:first-child{
+       position:absolute;
+       top:50%;
+       left:50%;
+       transform:translate(-50%,-50%);
+       min-height:100%;
+       max-height:150%;
+       min-width:100%;
+       max-width:150%;
+    }    
 	.price {
 		color: green;
 
@@ -175,7 +198,7 @@
     }    
 	.btns {
 		position: absolute;
-		bottom: px2rem(70px);
+		bottom: px2rem(50px);
 		left: 0;
         z-index: 2;
         width: 100%;
@@ -188,13 +211,12 @@
             text-align: center;
             background:url('../assets/image/submit.gif') no-repeat center center;
             background-size: 100%;
-            padding: px2rem(15px) 0;
+            border-radius: px2rem(50px);
 		}
         .my-order {
             background:url('../assets/image/myorder.gif') no-repeat center center;
             background-size: 100%;
             margin-right: px2rem(50px);
-            padding: px2rem(15px) 0;
         }
 	}
 </style>
