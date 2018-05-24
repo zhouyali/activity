@@ -12,12 +12,15 @@
 				</div>
 				<span class="span" :class="{'checked':checkeds.indexOf(index) > -1}" @click.stop="checkedProduct(item,index)"><i></i></span>
 			</div>
-            <footer :class="{'fixed':!list || list.length < 2}">
+            <div class="footer-box">
+                <footer :class="{'fixed':!list || list.length < 2}">
+           
+                </footer> 
                 <div class="btns">
                     <span :class="{'active':activeBtn == 0}" class="my-order" @click="skipTo(0)"></span>
                     <span :class="{'avtive':activeBtn == 1}" @click="skipTo(1)"></span>
-                </div>            
-            </footer>   
+                </div> 
+            </div>  
 		</div>
 	</div>
 </template>
@@ -147,13 +150,6 @@
             background-color: currentColor;
         }
 	}
-/*	.img {
-		background: yellow;
-		width: px2rem(320px);
-		height: px2rem(169px);
-        border-radius: px2rem(15px);
-        margin: px2rem(22px) 0 px2rem(22px) px2rem(90px);
-	}*/
     .imgBox{
        position:relative;
        overflow: hidden;
@@ -181,26 +177,45 @@
         padding-bottom: px2rem(113px);
         -webkit-overflow-scrolling: touch;
     }
-    footer {
+    .footer-box {
         position: absolute;
         bottom: 0;
         left:0;
         width: 100%;
         height: px2rem(113px);
         z-index:1;
-        background: url('../assets/image/list-bottom.gif') no-repeat center bottom;
-        background-size: 100%;
         &.fixed  {
             position: fixed;
             bottom: 0;
             left:0; 
         }
-    }    
+    }
+    footer {
+        position: absolute;
+        bottom: 0;
+        left:-1000%;
+        width: 1000%;
+        height: px2rem(113px);
+        z-index:2;
+        background: url('../assets/image/list-bottom.gif') repeat-x center bottom;
+        background-size: auto 100%;
+        // &.fixed  {
+        //     position: fixed;
+        //     bottom: 0;
+        //     left:0; 
+        // }
+        animation: weave 50s linear infinite;
+    }  
+    @keyframes weave {
+        0% {left:-800%}
+        50% {left:-600%}
+        100% {left:-400%}
+    } 
 	.btns {
 		position: absolute;
 		bottom: px2rem(50px);
 		left: 0;
-        z-index: 2;
+        z-index: 3;
         width: 100%;
         text-align: center;
 		span {
