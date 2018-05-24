@@ -23,7 +23,8 @@ import {is_weixin} from '@/assets/js/tools'
             localStorage.removeItem('QRCode');
             localStorage.removeItem('LogisticCode')
             localStorage.removeItem('ShipperCode')
-            localStorage.removeItem('traces');            
+            localStorage.removeItem('traces'); 
+            localStorage.removeItem('subAlready');
             let search = location.search;
             if (!search || search.indexOf('QRCode=') === -1) {
                 $toast.showMsg('参数解析失败')
@@ -38,15 +39,16 @@ import {is_weixin} from '@/assets/js/tools'
                     localStorage.setItem('QRCode',params.QRCode)
                 }
             });
-            console.log(localStorage.getItem('QRCode'),1111)
             this.$http.post('/Verification/ORCodeVerification',params).then((res)=>{
                     if(res.data.result[0].code === "0002") {
                         localStorage.setItem('LogisticCode',res.data.result[0].LogisticsMessage.LogisticCode)
                         localStorage.setItem('ShipperCode',res.data.result[0].LogisticsMessage.ShipperCode)
                         localStorage.setItem('traces',JSON.stringify(res.data.result[0].LogisticsMessage.Traces));
                         localStorage.setItem('product',JSON.stringify(res.data.result[0].product))
+                    //接口已经预定状态下跳转我的订单页，加参数isBooked值为“1”。
                         this.$router.push({path:'myOrder',query:{'isOrder':'1'}})
-                    }else if(res.data.result[0].code === "0000") {                   
+                    }else if(res.data.result[0].code === "0000") {
+                    //接口未预定状态下，正常跳转。                   
                         this.$router.push('list')
                     }else {
                         $toast.showMsg(res.data.result.message);
