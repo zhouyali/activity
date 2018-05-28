@@ -1,5 +1,12 @@
 <template>
     <div class="container">
+        <div class="mask" :class="{'showMask':isShow}">
+            <div class="mask-content">
+                您可以预订&nbsp{{this.canBuyNumber}}&nbsp个礼品哦！
+                <span class="go-choice" @click="gotoChoose">重新选择</span>
+                <span class="go-book" @click="gotoBook">直接预订</span>
+            </div>
+        </div>
         <div class="bg-img">
         </div>
         <div class="img-box clearfix" :class="{'center':info.length <=1}">
@@ -55,7 +62,9 @@ import {is_weixin} from '@/assets/js/tools'
                 name:'',
                 info:'',
                 QRCode:'',
-                timer:null
+                timer:null,
+                canBuyNumber:Number,
+                isShow:false
             }
         },
         created() {
@@ -64,26 +73,15 @@ import {is_weixin} from '@/assets/js/tools'
             }
             this.info = JSON.parse(localStorage.getItem('products'))
             this.QRCode = localStorage.getItem('QRCode')
-
+            this.canBuyNumber = localStorage.getItem('canBuyNumber')
         },
         methods: {
             submit() {
                 if(this.name && this.address && this.phone) {
-                          var params;
-                  if(this.info.length ==1) {
-                        params = {
-                            "key": "12345678",
-                            "Product": [{
-                                "ProductID": this.info[0].ProductID,
-                                "count": this.info.length,
-                                "address": this.address,
-                                "phone": this.phone,
-                                "ReceiveName": this.name,
-                                "QRCode": this.QRCode
-                            }] 
-                        }                   
-                    }else {
-                        params = {
+                    if(this.info.length < this.canBuyNumber) {
+                        this.isShow = true;
+                    }else if(this.info.length ==2){
+                        let params = {
                             "key": "12345678",
                             "Product": [{
                                 "ProductID": this.info[0].ProductID,
@@ -101,10 +99,30 @@ import {is_weixin} from '@/assets/js/tools'
                                 "QRCode":this.QRCode
                                                            
                             }]
-                        }                        
+                        } 
+                        this.getApi(params)
+                    }else if(this.info.length == 1) {
+                        let params = {
+                            "key": "12345678",
+                            "Product": [{
+                                "ProductID": this.info[0].ProductID,
+                                "count": this.info.length,
+                                "address": this.address,
+                                "phone": this.phone,
+                                "ReceiveName": this.name,
+                                "QRCode": this.QRCode
+                            }] 
+                        } 
+                        this.getApi(params);
                     }
-                    this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
-                        if(res.data.result.code == '0000') {
+                }else {
+                    $toast.showMsg('请填写收货信息')
+                }
+                
+            },
+            getApi(params) {
+                  this.$http.post('/ExchangedGood/SubmitProduct',params).then((res)=> {
+                      if(res.data.result.code == '0000') {
                             localStorage.setItem('subProducts',JSON.stringify(this.info))
                             this.$router.push('myOrder');
                             $toast.showMsg('提交成功！');
@@ -115,18 +133,33 @@ import {is_weixin} from '@/assets/js/tools'
                                     WeixinJSBridge.call('closeWindow');
                                 },2000)               
                             }
-                        }else {
+                      }else {
                             $toast.showMsg(res.data.result.message);
-                        }
-                    }) 
-                }else {
-                    $toast.showMsg('请填写收货信息')
-                }
-                
+                      }
+                  }) 
             },
             goToBack() {
                  this.$router.go(-1);
-            }         
+            },
+            gotoBook() {
+                let params = {
+                    "key": "12345678",
+                    "Product": [{
+                        "ProductID": this.info[0].ProductID,
+                        "count": this.info.length,
+                        "address": this.address,
+                        "phone": this.phone,
+                        "ReceiveName": this.name,
+                        "QRCode": this.QRCode
+                    }] 
+                } 
+                this.getApi(params);
+                this.isShow = false;
+            },
+            gotoChoose() {
+               this.isShow = false;
+               this.$router.push('list')
+            }     
             
         }
     }
@@ -135,6 +168,49 @@ import {is_weixin} from '@/assets/js/tools'
     .container {
         -webkit-overflow-scrolling: touch;
     }
+    .mask {
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        z-index:4;
+        background:rgba(0,0,0,.5);
+        display: none;
+        .mask-content {
+            position: absolute;
+            top:40%;
+            left:50%;
+            margin-left:-40%;
+            width: 80%;
+            height:px2rem(300px);
+            background-color: #fff;
+            text-align: center;
+            font-size: px2rem(35px);
+            border-radius: px2rem(20px);
+            padding-top:px2rem(80px);
+            span {
+                display: inline-block;
+                border-radius: px2rem(20px);
+                padding:px2rem(10px) px2rem(30px);
+                background:#28C768;
+                position: absolute;
+                bottom:px2rem(30px);
+                color: #fff;
+                font-size: px2rem(30px);
+            }
+            .go-choice {
+                left:10%;
+            }
+            .go-book {
+                right:10%;
+            }
+        }
+
+    }
+    .showMask {
+        display: block;
+    }    
     .bg-img {
         height: px2rem(388px);
         width: 100%;

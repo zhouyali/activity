@@ -1,14 +1,21 @@
 <template>
-	<div class="container">
+	<div class="container self">
+        <div class="mask" :class="{'showMask':isShow}">
+            <div class="mask-content">
+                您可以预订&nbsp{{this.canBuyNumber}}&nbsp个礼品哦！
+                <span class="go-choice" @click="gotoChoose">继续选择</span>
+                <span class="go-book" @click="gotoBook">直接预订</span>
+            </div>
+        </div>
 		<div class="logo">
 		</div>
-		<div class="list" v-if="list && list.length > 0">
+		<div class="list" id="list" v-if="list && list.length > 0">
 			<div class="product clearfix" v-for="(item,index) in list" :key="index" @click="skipToDetail(item.imghtmldetial)">
                 <div class="imgBox fl">
     				<img class="" v-if="item.productImg &&item.productImg.length>0&& item.productImg[0].productimgID" :src="item.productImg[0].productimgID" alt="">
                     <img class="" v-else src="" alt="">
                 </div>
-				<div class="info" v-if="item.htmldetial!==''" v-html="item.htmldetial">			
+				<div class="info" id="info" v-if="item.htmldetial!==''" v-html="item.htmldetial">			
 				</div>
 				<span class="span" :class="{'checked':checkeds.indexOf(index) > -1}" @click.stop="checkedProduct(item,index)"><i></i></span>
 			</div>
@@ -32,10 +39,13 @@
 				activeBtn:0,
 				checkeds: [],
 				products:[],
-                isBooked:false
+                isBooked:false,
+                canBuyNumber:Number,
+                isShow:false
 			}
 		},
-        created() {
+        mounted() {
+            localStorage.removeItem('products')
             var backMsg;
             this.$route.query.backMsg?backMsg = this.$route.query.backMsg:backMsg='';
             let subAlready = localStorage.getItem('subAlready');
@@ -44,13 +54,20 @@
             }else {
                  this.isBooked = false
             }
+            this.canBuyNumber = localStorage.getItem('canBuyNumber')
             this.getList()
+            setTimeout(()=>{
+                this.showText()
+            },0)
         },
 		methods: {
 		    getList() {
 	            this.$http.post('/getProduct/getSinaProduct',{"key":"12345678","ProductID":""}).then((res)=> {
 	            	if(res.status == 200) {
 	            		this.list = res.data.result;
+                        setTimeout(()=>{
+                            this.showText()
+                        },0)
 	            	}else {
 	            		$toast.showMsg(res.data.result.message)
 	            	}
@@ -75,7 +92,10 @@
 					if (this.checkeds.length < 1) {
 	            		$toast.showMsg('请选择商品')
 	            		return false;
-	            	}else if(this.isBooked){
+	            	}else if((this.checkeds.length < this.canBuyNumber)&&!this.isBooked){
+                        this.isShow = true
+                        return false;
+                    }else if(this.isBooked){
                         $toast.showMsg('您已预定过商品')
                         return false;
                     }else {
@@ -85,6 +105,14 @@
 
 				}
 			},
+            gotoBook() {
+                this.$router.push({'path':'itemdetail'});
+                localStorage.setItem('products',JSON.stringify(this.products)); 
+                this.isShow = false;
+            },
+            gotoChoose() {
+               this.isShow = false;
+            },
             goToDetail() {
                 this.$router.push('itemdetail')
             },
@@ -94,19 +122,78 @@
             		this.checkeds.splice(temp, 1);
             		return false;
             	}
-            	if (this.checkeds.length >= 2) {
-            		$toast.showMsg('只能选择两个商品');
+            	if (this.checkeds.length >= this.canBuyNumber) {
+            		$toast.showMsg('只能选择'+this.canBuyNumber+'个商品哦');
             		return false;
             	}
             	this.checkeds.push(index);
-            	this.products.push(item);         	
+            	this.products.push(item);        	
             	
+            },
+            showText() {
+                let content = document.getElementById('list');
+                let resTexts = document.querySelectorAll('#list .info font');
+                let texts;
+                texts = Array.prototype.slice.call(resTexts,0);
+                for(var i=0;i<resTexts.length;i++) {
+                    resTexts[i].style.size = '';
+                    resTexts[i].className = 'selfStyle';
+                    // resTexts[i].style.color = 'red';
+                    // console.log(resTexts[i], resTexts[i].style.fontSize ,resTexts[i].style.color)
+                }      
             }
 		}
 	}
 </script>
-<style lang="scss" scoped>
-    .container{
+<style lang="scss">
+.self {
+    .selfStyle {
+        font-size: px2rem(24px) !important;
+    }
+    .mask {
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        z-index:4;
+        background:rgba(0,0,0,.5);
+        display: none;
+        .mask-content {
+            position: absolute;
+            top:40%;
+            left:50%;
+            margin-left:-40%;
+            width: 80%;
+            height:px2rem(300px);
+            background-color: #fff;
+            text-align: center;
+            font-size: px2rem(35px);
+            border-radius: px2rem(20px);
+            padding-top:px2rem(80px);
+            span {
+                display: inline-block;
+                border-radius: px2rem(20px);
+                padding:px2rem(10px) px2rem(30px);
+                background:#28C768;
+                position: absolute;
+                bottom:px2rem(30px);
+                color: #fff;
+                font-size: px2rem(30px);
+            }
+            .go-choice {
+                left:10%;
+            }
+            .go-book {
+                right:10%;
+            }
+        }
+
+    }
+    .showMask {
+        display: block;
+    }
+    &.container{
        -webkit-overflow-scrolling:touch;
     }
 	.logo {
@@ -126,8 +213,10 @@
         z-index:1;
         overflow: hidden;
 		.info {
-            padding-top: px2rem(40px);
+            height:px2rem(200px);
+            padding-top: px2rem(40px) ;
             padding-left: px2rem(450px);
+            padding-right: px2rem(45px);
 		}
     span {
             box-sizing:border-box;
@@ -193,8 +282,11 @@
     footer {
         position: absolute;
         bottom: 0;
+        left:0;
+        width:100%;
+      /*  动画
         left:-1000%;
-        width: 1000%;
+        width: 1000%;*/
         height: px2rem(113px);
         z-index:2;
         background: url('../assets/image/list-bottom.gif') repeat-x center bottom;
@@ -204,7 +296,8 @@
         //     bottom: 0;
         //     left:0; 
         // }
-        animation: weave 50s linear infinite;
+
+        /*animation: weave 50s linear infinite;*/
     }  
     @keyframes weave {
         0% {left:-800%}
@@ -234,4 +327,5 @@
             margin-right: px2rem(50px);
         }
 	}
+}
 </style>
