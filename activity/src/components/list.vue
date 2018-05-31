@@ -75,7 +75,8 @@
 		    },
             skipToDetail(detail){
                 if(detail) {
-                    this.$router.push({path:'listDetail',query:{'detail':detail}})
+                    this.$router.push({path:'listDetail'});
+                    localStorage.setItem('detail',detail)
                 }else {
                     $toast.showMsg('暂无详情')
                 }
@@ -204,17 +205,17 @@
 	}
 	.product {
         width:px2rem(690px);
-        height:px2rem(220px);
+        height:px2rem(280px);
         box-shadow: px2rem(5px) px2rem(5px) px2rem(5px) #E7E7E6;
 		margin:0 auto px2rem(20px);
         background:url('../assets/image/card.gif') no-repeat top center;
-        background-size: 100%;
+        background-size: 100% 100%;
         position:relative;
         z-index:1;
         overflow: hidden;
 		.info {
             height:px2rem(200px);
-            padding-top: px2rem(40px) ;
+            padding-top: px2rem(70px) ;
             padding-left: px2rem(450px);
             padding-right: px2rem(45px);
 		}
@@ -240,12 +241,12 @@
         }
 	}
     .imgBox{
-       position:relative;
-       overflow: hidden;
+        position:relative;
+        overflow: hidden;
         width: px2rem(320px);
-        height: px2rem(169px);  
+        height: px2rem(227px);  
         border-radius: px2rem(15px);
-        margin: px2rem(22px) 0 px2rem(22px) px2rem(90px);
+        margin: px2rem(20px) 0 px2rem(20px) px2rem(90px);
     }
     .imgBox>img:first-child{
        position:absolute;

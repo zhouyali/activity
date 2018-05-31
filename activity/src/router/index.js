@@ -47,7 +47,7 @@ const $router = new Router({
             path: '/checkorder',
             name: 'checkorder',
             component: CheckOrder
-        }                             
+        }                            
     ]
 })
 
