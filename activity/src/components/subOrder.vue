@@ -85,14 +85,14 @@ import {is_weixin} from '@/assets/js/tools'
                             "key": "12345678",
                             "Product": [{
                                 "ProductID": this.info[0].ProductID,
-                                "count": this.info.length,
+                                "count":1,
                                 "address": this.address,
                                 "phone": this.phone,
                                 "ReceiveName": this.name,
                                 "QRCode":this.QRCode
                             },{
                                 "ProductID": this.info[1].ProductID,
-                                "count": this.info.length,
+                                "count": 1,
                                 "address": this.address,
                                 "phone": this.phone,
                                 "ReceiveName": this.name,
@@ -106,7 +106,7 @@ import {is_weixin} from '@/assets/js/tools'
                             "key": "12345678",
                             "Product": [{
                                 "ProductID": this.info[0].ProductID,
-                                "count": this.info.length,
+                                "count": 1,
                                 "address": this.address,
                                 "phone": this.phone,
                                 "ReceiveName": this.name,

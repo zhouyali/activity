@@ -219,7 +219,7 @@
             padding-left: px2rem(450px);
             padding-right: px2rem(45px);
 		}
-    span {
+    .span {
             box-sizing:border-box;
             display:block;
             position: absolute;
@@ -244,9 +244,9 @@
         position:relative;
         overflow: hidden;
         width: px2rem(320px);
-        height: px2rem(227px);  
+        height: px2rem(228px);  
         border-radius: px2rem(15px);
-        margin: px2rem(20px) 0 px2rem(20px) px2rem(90px);
+        margin: px2rem(26px) 0 px2rem(26px) px2rem(90px);
     }
     .imgBox>img:first-child{
        position:absolute;
