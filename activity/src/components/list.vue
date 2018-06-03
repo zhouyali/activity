@@ -121,6 +121,7 @@
             	let temp = this.checkeds.indexOf(index);
             	if (temp > -1) {
             		this.checkeds.splice(temp, 1);
+                    this.products.splice(temp, 1);
             		return false;
             	}
             	if (this.checkeds.length >= this.canBuyNumber) {
