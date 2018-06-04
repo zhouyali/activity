@@ -97,7 +97,7 @@
                         this.isShow = true
                         return false;
                     }else if(this.isBooked){
-                        $toast.showMsg('您已预定过商品')
+                        $toast.showMsg('您已经选过礼品 \n 请查看我的订单')
                         return false;
                     }else {
                         this.$router.push({'path':'itemdetail'});
@@ -124,10 +124,13 @@
                     this.products.splice(temp, 1);
             		return false;
             	}
-            	if (this.checkeds.length >= this.canBuyNumber) {
+            	if (!this.isBooked &&(this.checkeds.length >= this.canBuyNumber)) {
             		$toast.showMsg('只能选择'+this.canBuyNumber+'个商品哦');
             		return false;
-            	}
+            	}else if(this.isBooked){
+                    $toast.showMsg('您已经选过礼品 \n 请查看我的订单');
+                    return false
+                }
             	this.checkeds.push(index);
             	this.products.push(item);        	
             	
