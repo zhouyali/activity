@@ -78,6 +78,10 @@ import {is_weixin} from '@/assets/js/tools'
         methods: {
             submit() {
                 if(this.name && this.address && this.phone) {
+                    if( !/^0?1[2|3|4|5|6|7|8|9][0-9]\d{8}$/.test(this.phone)) {
+                        $toast.showMsg('请输入正确手机号');
+                        return false
+                    }
                     if(this.info.length < this.canBuyNumber) {
                         this.isShow = true;
                     }else if(this.info.length ==2){
