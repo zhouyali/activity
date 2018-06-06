@@ -21,7 +21,8 @@ import {Trim} from '@/assets/js/tools'
             setTimeout(()=>{
                 this.showImgs();
                 //统一字体
-                // this.showText();
+                this.showText();
+                this.showTitle()
             },0)
         },
         methods: {
@@ -39,18 +40,26 @@ import {Trim} from '@/assets/js/tools'
                     resImgs[i].style.width = '100%';
                 }      
             },
-            // showText() {
-            //     let content = document.getElementById('content');
-            //     let resTexts = document.querySelectorAll('font');
-            //     let texts;
-            //     texts = Array.prototype.slice.call(resTexts,0);
-            //     for(var i=0;i<resTexts.length;i++) {
-            //         resTexts[i].style.size = '';
-            //         resTexts[i].className = 'selfStyle';
-            //         // resTexts[i].style.color = 'red';
-            //         // console.log(resTexts[i], resTexts[i].style.fontSize ,resTexts[i].style.color)
-            //     }      
-            // }            
+            showText() {
+                let content = document.getElementById('content');
+                let resTexts = document.querySelectorAll('font[size="6"]');
+                let texts;
+                texts = Array.prototype.slice.call(resTexts,0);
+                for(var i=0;i<resTexts.length;i++) {
+                    resTexts[i].style.size = '';
+                    resTexts[i].className = 'selfStyle';
+                }                      
+            },
+            showTitle() {
+                let content = document.getElementById('content');
+                let resTitles = document.querySelectorAll('font[size="8"]');
+                let titles;
+                titles = Array.prototype.slice.call(resTitles,0);
+                for(var i=0;i<resTitles.length;i++) {
+                    resTitles[i].style.size = '';
+                    resTitles[i].className = 'largeStyle';
+                }                 
+            }            
         },
         destroyed() {
            localStorage.removeItem('detail')
@@ -61,6 +70,9 @@ import {Trim} from '@/assets/js/tools'
 .listDetail {
     .selfStyle {
         font-size: px2rem(30px) !important;
+    }
+    .largeStyle {
+        font-size: px2rem(36px) !important;
     }
     &.container{
         -webkit-overflow-scrolling: touch;
